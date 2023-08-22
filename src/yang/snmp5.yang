@@ -1,0 +1,45 @@
+module snmp5 {
+  namespace "http://com/example/snmp5";
+  prefix snmp5;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+
+  list snmp5 {
+    key comm-str;
+
+    uses ncs:service-data;
+    ncs:servicepoint "snmp5";
+
+    leaf comm-str {
+      tailf:info "snmp-server community-string";
+      type string;
+    }
+
+    // may replace this with other ways of refering to the devices.
+    leaf-list device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+    leaf access {
+      tailf:info "Specify read-only or read-write";
+      type enumeration {
+        enum ro;
+        enum rw;
+      }
+    }
+
+    // replace with your own stuff here
+    leaf dummy {
+      type inet:ipv4-address;
+    }
+  }
+}
